@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE HTTP/1.1 vs HTTP/2</title>
+</head>
+<body>
+<h2>SSE TCP Connection Test</h2>
+<button id="connect-http1">Connect to HTTP/1.1</button>
+<button id="connect-http2">Connect to HTTP/2</button>
+
+<h3>HTTP/1.1 Data</h3>
+<div id="data-http1">No data yet...</div>
+
+<h3>HTTP/2 Data</h3>
+<div id="data-http2">No data yet...</div>
+
+<script>
+    document.getElementById('connect-http1').addEventListener('click', () => {
+        const eventSourceHttp1 = new EventSource("https://localhost:8443/http1");
+        eventSourceHttp1.onmessage = (event) => {
+            document.getElementById("data-http1").innerText = event.data;
+        };
+    });
+
+    document.getElementById('connect-http2').addEventListener('click', () => {
+        const eventSourceHttp2 = new EventSource("https://localhost:8443/http2");
+        eventSourceHttp2.onmessage = (event) => {
+            document.getElementById("data-http2").innerText = event.data;
+        };
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE 실시간 주식 가격</title>
+</head>
+<body>
+<h2>Apple (AAPL) 주식 가격</h2>
+<p id="price">Loading...</p>
+
+<script>
+    const eventSource = new EventSource("http://localhost:8080/stocks");
+
+    eventSource.onmessage = function(event) {
+        const stockData = JSON.parse(event.data);
+        document.getElementById("price").innerText = `가격: $${stockData.price}`;
+    };
+
+    eventSource.onerror = function() {
+        console.error("SSE 연결 오류 발생");
+        eventSource.close();
+    };
+</script>
+</body>
+</html>
